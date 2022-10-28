@@ -104,7 +104,7 @@ class AtsFinance:
             endpoints = list()
 
             if type(ticker) == str:
-                ticker = list(ticker)
+                ticker = [ticker]
 
             for t in ticker:
                 endpoints.append(
