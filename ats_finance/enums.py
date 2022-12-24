@@ -31,7 +31,7 @@ class PolygonInterval(Enum):
 class YfinancePeriod(Enum):
 
     WEEK = '7d'
-    MONTH = '30d'
+    MONTH = '1mo'
 
 
 class YfinanceInterval(Enum):
