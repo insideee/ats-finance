@@ -26,3 +26,24 @@ class PolygonInterval(Enum):
     DAY = 'day'
     MONTH = 'month'
     YEAR = 'year'
+
+
+class YfinancePeriod(Enum):
+
+    WEEK = '7d'
+    MONTH = '30d'
+
+
+class YfinanceInterval(Enum):
+
+    ONE_MINUTE = '1m'
+    TWO_MINUTES = '2m'
+    FIVE_MINUTES = '5m'
+    THIRTY_MINUTES = '30m'
+    SIXTH_MINUTES = '60m'
+    ONE_HOUR = '1h'
+    ONE_DAY = '1d'
+    FIVE_DAYS = '5d'
+    ONE_WEEK = '1wk'
+    ONE_MONTH = '1mo'
+    THREE_MINUTE = '3mo'

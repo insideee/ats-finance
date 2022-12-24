@@ -1,13 +1,13 @@
 """Ats-finance is an async library for fetch stocks and futures data from polygon api
 """
-
+import yfinance
 import aiohttp
 import asyncio
 from pydantic.error_wrappers import ValidationError
 from typing import Optional, Union, List
 from pandas import DataFrame
 
-from .enums import Source, PolygonInterval, Polygon
+from .enums import Source, PolygonInterval, Polygon, YfinancePeriod, YfinanceInterval
 from .exception import (NotAValidSource, NotAValidTicker,
                         MissingRequestArgument, MissingPolygonApiKey,
                         NotAValidIntervalType)
@@ -79,16 +79,15 @@ class AtsFinance:
     @classmethod
     async def fetch_raw(cls, ticker: Union[str, list],
                         source: Source,
-                        period: int, interval: int,
-                        interval_type: PolygonInterval = PolygonInterval.MINUTES,
-                        api_key: Optional[str] = None) -> tuple:
+                        period: Union[int, YfinancePeriod],
+                        interval: Union[int, YfinanceInterval],
+                        interval_type: Optional[PolygonInterval] = PolygonInterval.MINUTES,
+                        api_key: Optional[str] = None) -> tuple | dict:
 
         if not isinstance(ticker, (list, str)):
             raise NotAValidTicker
         elif not isinstance(source, Source):
             raise NotAValidSource
-        elif not isinstance(interval_type, PolygonInterval):
-            raise NotAValidIntervalType
 
         if source.value == 'polygon':
 
@@ -120,14 +119,35 @@ class AtsFinance:
                 return await asyncio.gather(*tasks)
 
         else:
-            ...
+            df = yfinance.download(tickers=ticker,
+                                   period=period,
+                                   interval=interval,
+                                   auto_adjust=False,
+                                   progress=False)
+            aux = dict()
+            aux['symbol'] = ticker
+            aux['df'] = df
+            return aux
+
+    @classmethod
+    async def yf_ticker_history(cls, ticker: str,
+                                period: YfinancePeriod = YfinancePeriod.WEEK,
+                                interval: YfinanceInterval = YfinanceInterval.ONE_MINUTE):
+        obj = yfinance.Ticker(ticker)
+
+        return obj.history(period=period.value(), interval=interval.value(),
+                           start=None, end=None, prepost=False, actions=True,
+                           auto_adjust=True, back_adjust=False,
+                           proxy=None, rounding=False, timeout=None)
+
 
     @classmethod
     async def fetch(cls, ticker: Union[str, list],
                     source: Source,
-                    period: int, interval: int,
+                    period: Union[int, YfinancePeriod],
+                    interval: Union[int, YfinanceInterval],
                     local_timezone: bool = False,
-                    interval_type: PolygonInterval = PolygonInterval.MINUTES,
+                    interval_type: Optional[PolygonInterval] = PolygonInterval.MINUTES,
                     api_key: Optional[str] = None) -> List[dict]:
         """Fetch aggregates data for a ticker or a list of them
 
@@ -149,9 +169,12 @@ class AtsFinance:
             
         """
 
-        # temp
         if source == Source.YFINANCE:
-            return None
+            aux = cls.fetch_raw(ticker=ticker,
+                                source=source,
+                                period=period,
+                                interval=interval)
+            return [aux]
 
         data = await cls.fetch_raw(ticker=ticker,
                                    source=source,

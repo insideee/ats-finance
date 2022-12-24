@@ -11,6 +11,7 @@ python = "^3.10"
 pydantic = {extras = ["dotenv"], version = "^1.10.2"}
 aiohttp = "^3.8.3"
 pandas = "^1.5.1"
+yfinance = "^0.2.3"
 
 
 [tool.poetry.group.dev.dependencies]
