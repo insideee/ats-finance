@@ -132,6 +132,7 @@ class AtsFinance:
                            proxy=None, rounding=False, timeout=None)
         
         
+    @classmethod    
     def yfinance_fetch(cls, ticker: Union[str, list],
                     period: Union[int, YfinancePeriod],
                     interval: Union[int, YfinanceInterval],
