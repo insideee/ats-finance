@@ -118,16 +118,7 @@ class AtsFinance:
 
                 return await asyncio.gather(*tasks)
 
-        else:
-            df = yfinance.download(tickers=ticker,
-                                   period=period.value,
-                                   interval=interval.value,
-                                   auto_adjust=False,
-                                   progress=False)
-            aux = dict()
-            aux['symbol'] = ticker
-            aux['df'] = df
-            return aux
+
 
     @classmethod
     async def yf_ticker_history(cls, ticker: str,
@@ -139,6 +130,23 @@ class AtsFinance:
                            start=None, end=None, prepost=False, actions=True,
                            auto_adjust=True, back_adjust=False,
                            proxy=None, rounding=False, timeout=None)
+        
+        
+    def yfinance_fetch(cls, ticker: Union[str, list],
+                    period: Union[int, YfinancePeriod],
+                    interval: Union[int, YfinanceInterval],
+                    local_timezone: bool = False,
+                    source: Source = Source.YFINANCE) -> List[dict]: 
+        
+        df = yfinance.download(tickers=ticker,
+                                   period=period.value,
+                                   interval=interval.value,
+                                   auto_adjust=False,
+                                   progress=False)
+        aux = dict()
+        aux['symbol'] = ticker
+        aux['df'] = df
+        return [aux]  
 
 
     @classmethod
@@ -168,13 +176,6 @@ class AtsFinance:
              'df': pandas.Dataframe}
             
         """
-
-        if source == Source.YFINANCE:
-            aux = cls.fetch_raw(ticker=ticker,
-                                source=source,
-                                period=period,
-                                interval=interval)
-            return [aux]
 
         data = await cls.fetch_raw(ticker=ticker,
                                    source=source,
