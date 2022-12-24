@@ -120,8 +120,8 @@ class AtsFinance:
 
         else:
             df = yfinance.download(tickers=ticker,
-                                   period=period.value(),
-                                   interval=interval.value(),
+                                   period=period.value,
+                                   interval=interval.value,
                                    auto_adjust=False,
                                    progress=False)
             aux = dict()
@@ -135,7 +135,7 @@ class AtsFinance:
                                 interval: YfinanceInterval = YfinanceInterval.ONE_MINUTE):
         obj = yfinance.Ticker(ticker)
 
-        return obj.history(period=period.value(), interval=interval.value(),
+        return obj.history(period=period.value, interval=interval.value,
                            start=None, end=None, prepost=False, actions=True,
                            auto_adjust=True, back_adjust=False,
                            proxy=None, rounding=False, timeout=None)
