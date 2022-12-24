@@ -120,8 +120,8 @@ class AtsFinance:
 
         else:
             df = yfinance.download(tickers=ticker,
-                                   period=period,
-                                   interval=interval,
+                                   period=period.value(),
+                                   interval=interval.value(),
                                    auto_adjust=False,
                                    progress=False)
             aux = dict()
