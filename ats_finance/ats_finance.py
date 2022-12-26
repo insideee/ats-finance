@@ -146,7 +146,8 @@ class AtsFinance:
                                    progress=False)
         aux = dict()
         aux['symbol'] = ticker
-        aux['df'] = df
+        aux['df'] = df.reset_index()
+        aux['df'] = aux['df'][['Datetime', 'Open', 'High', 'Low', 'Close', 'Volume']]
         return [aux]  
 
 

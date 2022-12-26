@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ats-finance"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["inside <jeffersonlagoinha@gmail.com>"]
 readme = "README.md"
