@@ -39,6 +39,7 @@ class YfinanceInterval(Enum):
     ONE_MINUTE = '1m'
     TWO_MINUTES = '2m'
     FIVE_MINUTES = '5m'
+    FIFTEEN_MINUTES = '15m'
     THIRTY_MINUTES = '30m'
     SIXTH_MINUTES = '60m'
     ONE_HOUR = '1h'
