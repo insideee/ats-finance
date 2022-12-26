@@ -140,18 +140,17 @@ class AtsFinance:
                     source: Source = Source.YFINANCE) -> List[dict]: 
         
         
-        l = list()
-        for i, t in enumerate(ticker):
-            df = yfinance.download(tickers=t,
+        df = yfinance.download(tickers=ticker,
                                        period=period.value,
                                        interval=interval.value,
                                        auto_adjust=False,
                                        progress=False)
-            aux = dict()
-            aux['symbol'] = ticker[i]
-            aux['df'] = df.reset_index()
-            aux['df'] = aux['df'][['Datetime', 'Open', 'High', 'Low', 'Close', 'Volume']]
-        return l  
+        aux = dict()
+        aux['symbol'] = ticker[i]
+        aux['df'] = df.reset_index()
+        aux['df'] = aux['df'][['Datetime', 'Open', 'High', 'Low', 'Close', 'Volume']]
+        
+        return [aux]
 
 
     @classmethod
