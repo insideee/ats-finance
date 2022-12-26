@@ -133,22 +133,25 @@ class AtsFinance:
         
         
     @classmethod    
-    def yfinance_fetch(cls, ticker: Union[str, list],
+    def yfinance_fetch(cls, ticker: list,
                     period: Union[int, YfinancePeriod],
                     interval: Union[int, YfinanceInterval],
                     local_timezone: bool = False,
                     source: Source = Source.YFINANCE) -> List[dict]: 
         
-        df = yfinance.download(tickers=ticker,
-                                   period=period.value,
-                                   interval=interval.value,
-                                   auto_adjust=False,
-                                   progress=False)
-        aux = dict()
-        aux['symbol'] = ticker
-        aux['df'] = df.reset_index()
-        aux['df'] = aux['df'][['Datetime', 'Open', 'High', 'Low', 'Close', 'Volume']]
-        return [aux]  
+        
+        l = list()
+        for i, t in enumerate(ticker):
+            df = yfinance.download(tickers=t,
+                                       period=period.value,
+                                       interval=interval.value,
+                                       auto_adjust=False,
+                                       progress=False)
+            aux = dict()
+            aux['symbol'] = ticker[i]
+            aux['df'] = df.reset_index()
+            aux['df'] = aux['df'][['Datetime', 'Open', 'High', 'Low', 'Close', 'Volume']]
+        return l  
 
 
     @classmethod
